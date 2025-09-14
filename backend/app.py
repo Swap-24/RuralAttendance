@@ -5,11 +5,8 @@ from flask_sqlalchemy import SQLAlchemy
 import psycopg2
 from dotenv import load_dotenv
 import os
-
-import cv2
-import face_recognition
 import numpy as np
-from PIL import Image
+import pandas as pd
 
 import bcrypt
 
