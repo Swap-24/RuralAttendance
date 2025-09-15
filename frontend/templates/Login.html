@@ -4,21 +4,27 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Rural School Attendance System - Login</title>
-  <link rel="stylesheet" href="Login.css">
-   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="/RuralAttendance/frontend/static/css/Login.css">
+  
 </head>
 <body>
   <div class="login-container">
     <div class="login-card">
       <header class="login-header">
-        <img src = "login.png" alt = "login sticker" width = "100" height = "100">
+        <img src = "/RuralAttendance/frontend/static/images/login.png" alt = "login sticker" width = "100" height = "100">
         <h1 class="school-title">Rural School Attendance System</h1>
         <p class="login-subtitle">Please sign in to continue</p>
       </header>
 
       <form id="loginForm">
         <div class="form-group">
-          <label for="email">Email Address</label>
+          <label for="username">Username</label>
+          <input id="username" name="username" type="text" required autocomplete="username" class="form-control">
+          <div id="username-error" class="error-message"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="username">Email Address</label>
           <input id="email" name="email" type="email" required autocomplete="email" class="form-control">
           <div id="email-error" class="error-message"></div>
         </div>
@@ -54,6 +60,6 @@
     </div>
   </div>
 
-  <script src="Login.js"></script>
+  <script src="/RuralAttendance/frontend/static/js/login.js"></script>
 </body>
 </html>

@@ -48,7 +48,7 @@ body{
 }
 
 /* ---------- card/container ---------- */
-.login-container{ width:100%; max-width:420px; }
+.login-container{ width:100%; max-width:420px; height: 500px;}
 .login-card{
   background: linear-gradient(180deg, var(--card), var(--paper));
   border-radius:var(--radius);
