@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Rural School Attendance System</title>
+    <link rel="stylesheet" href="/frontend/static/css/StudentView.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="dashboard-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="school-logo">
+                        <div class="logo-icon">📚</div>
+                    </div>
+                    <div class="school-info">
+                        <h1 class="school-name">Rural School Attendance System</h1>
+                        <p class="welcome-message">Welcome back, <span id="studentName">Priya Sharma</span>!</p>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button class="btn btn--outline logout-btn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="container">
+            <!-- Student Info Card -->
+            <section class="student-info-section">
+                <div class="student-info-card card">
+                    <div class="card__body">
+                        <div class="student-profile">
+                            <div class="student-photo">
+                                <div class="photo-placeholder">👤</div>
+                            </div>
+                            <div class="student-details">
+                                <h2 class="student-name" id="studentNameDetail">Priya Sharma</h2>
+                                <div class="student-meta">
+                                    <span class="student-class" id="studentClass">10th Grade</span>
+                                    <span class="student-roll">Roll No: <span id="studentRoll">RS2024001</span></span>
+                                </div>
+                                <div class="year-selector">
+                                    <label for="academicYear" class="form-label">Academic Year:</label>
+                                    <select id="academicYear" class="form-control">
+                                        <option value="2025-26" selected>2025-26</option>
+                                        <option value="2024-25">2024-25</option>
+                                        <option value="2023-24">2023-24</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Attendance Summary Cards -->
+            <section class="summary-section">
+                <div class="summary-grid">
+                    <div class="summary-card card">
+                        <div class="card__body">
+                            <div class="summary-icon total-days">📅</div>
+                            <div class="summary-content">
+                                <h3 class="summary-title">Total Days</h3>
+                                <p class="summary-value" id="totalDays">45</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card card">
+                        <div class="card__body">
+                            <div class="summary-icon present-days">✅</div>
+                            <div class="summary-content">
+                                <h3 class="summary-title">Present</h3>
+                                <p class="summary-value present" id="presentDays">42</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card card">
+                        <div class="card__body">
+                            <div class="summary-icon absent-days">❌</div>
+                            <div class="summary-content">
+                                <h3 class="summary-title">Absent</h3>
+                                <p class="summary-value absent" id="absentDays">3</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card card">
+                        <div class="card__body">
+                            <div class="summary-icon percentage">📊</div>
+                            <div class="summary-content">
+                                <h3 class="summary-title">Attendance %</h3>
+                                <p class="summary-value" id="attendancePercentage">93.33%</p>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progressFill" style="width: 93.33%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Performance Indicators -->
+            <section class="performance-section">
+                <div class="performance-grid">
+                    <div class="performance-card card">
+                        <div class="card__body">
+                            <div class="performance-header">
+                                <div class="performance-icon">🔥</div>
+                                <h3>Current Streak</h3>
+                            </div>
+                            <div class="performance-value">
+                                <span class="streak-number" id="currentStreak">15</span>
+                                <span class="streak-label">days</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="performance-card card">
+                        <div class="card__body">
+                            <div class="performance-header">
+                                <div class="performance-icon">⭐</div>
+                                <h3>Points Earned</h3>
+                            </div>
+                            <div class="performance-value">
+                                <span class="points-number" id="pointsEarned">420</span>
+                                <span class="points-label">points</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="achievements-card card">
+                        <div class="card__body">
+                            <h3 class="achievements-title">Achievements</h3>
+                            <div class="achievements-list" id="achievementsList">
+                                <!-- Achievements will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Detailed Monthly Table -->
+            <section class="monthly-section">
+                <div class="monthly-card card">
+                    <div class="card__header">
+                        <h3>Monthly Attendance Breakdown</h3>
+                    </div>
+                    <div class="card__body">
+                        <div class="table-responsive">
+                            <table class="attendance-table">
+                                <thead>
+                                    <tr>
+                                        <th>Month</th>
+                                        <th>Total Days</th>
+                                        <th>Present</th>
+                                        <th>Absent</th>
+                                        <th>Percentage</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="monthlyTableBody">
+                                    <!-- Table rows will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Print Button -->
+            <section class="actions-section">
+                <button class="btn btn--secondary print-btn" onclick="window.print()">
+                    📄 Print Report
+                </button>
+            </section>
+        </div>
+    </main>
+
+    <script src="/frontend/static/js/StudentView.js"></script>
+</body>
+</html>
