@@ -91,8 +91,8 @@ def signup():
         "name": name,
         "email": email,
         "roll_number": roll_number,
-        "password": hashed_password.decode('utf-8'),
-        "userRole": user_role,
+        "password_hash": hashed_password.decode('utf-8'),
+        "role": user_role,
         "face_encoding": encoding,
     }
 
