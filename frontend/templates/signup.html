@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Rural School Attendance System - Sign Up</title>
+  <link rel="stylesheet" href="/frontend/static/css/styles.css">
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <header class="login-header">
+        <h1 class="school-title">Rural School Attendance System</h1>
+        <p class="login-subtitle">Create your account</p>
+      </header>
+
+      <form action="" method="POST" enctype="multipart/form-data">
+    
+    <!-- Name -->
+    <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" required>
+    </div>
+
+    <!-- Email -->
+    <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required>
+    </div>
+
+    <!-- Roll Number -->
+    <div class="form-group">
+        <label for="roll_number">Roll Number</label>
+        <input type="text" id="roll_number" name="roll_number" required>
+    </div>
+
+    <!-- Password -->
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+
+    <!-- Confirm Password -->
+    <div class="form-group">
+        <label for="confirm_password">Confirm Password</label>
+        <input type="password" id="confirm_password" name="confirm_password" required>
+    </div>
+
+    <!-- User Role (Radio buttons) -->
+    <div class="form-group">
+        <label>User Role</label><br>
+        <input type="radio" id="student" name="user_role" value="student" required>
+        <label for="student">Student</label><br>
+        <input type="radio" id="admin" name="user_role" value="admin" required>
+        <label for="admin">Admin</label>
+    </div>
+
+    <!-- Image Upload -->
+    <div class="form-group">
+        <label for="image">Upload Profile Image</label>
+        <input type="file" id="image" name="image" accept="image/*">
+    </div>
+
+    <!-- Submit -->
+    <div class="form-group">
+        <button type="submit">Sign Up</button>
+    </div>
+</form>
+    </div>
+  </div>
+
+ <script src="/frontend/static/js/signup.js"></script>
+</body>
+</html>
