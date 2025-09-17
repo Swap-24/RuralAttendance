@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .then(response => {
       if (response.ok) {
-        window.location.href = '/dashboard'; // Change as needed
+        window.location.href = "./templates/StudentView.html"; // Change as needed
       } else {
         return response.json().then(data => {
           document.getElementById('password-error').textContent = data.message || 'Login failed.';
@@ -59,6 +59,4 @@ document.addEventListener('DOMContentLoaded', function() {
     passwordInput.setAttribute('type', type);
     this.classList.toggle('active');
   });
-
-  
 });

@@ -4,9 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Rural School Attendance System - Sign Up</title>
-
-  <!-- ✅ Load CSS from /static/css/Login.css -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/Login.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
   <div class="login-container">
@@ -16,8 +14,7 @@
         <p class="login-subtitle">Create your account</p>
       </header>
 
-      <!-- ✅ form integrated with Flask -->
-      <form id="signupForm" action="/register" method="POST" enctype="multipart/form-data">
+      <form id="signupForm" enctype="multipart/form-data">
         <div class="form-group">
           <label for="username">Username</label>
           <input id="username" name="username" type="text" required autocomplete="username" class="form-control">
@@ -51,22 +48,20 @@
 
         <div class="form-group">
           <label for="image">Profile Image</label>
-          <input id="image" name="image" type="file" accept="image/*" class="form-control" required>
+          <input id="image" name="image" type="file" accept="image/*" class="form-control">
           <div id="image-error" class="error-message"></div>
         </div>
 
         <button id="signupBtn" type="submit" class="btn btn--primary">Sign Up</button>
 
         <div class="form-links">
-          <!-- ✅ use Flask route for Login page -->
-          <a href="{{ url_for('home') }}" class="sign-in">Already have an account?</a>
+          <a href="Login.html" class="sign-in">Already have an account?</a>
           <a href="#" class="help-link">Need Help?</a>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- ✅ Load JS from /static/js/signup.js -->
-  <script src="{{ url_for('static', filename='js/signup.js') }}"></script>
+ <script src="{{ url_for('static', filename='js/signup.js') }}"></script>
 </body>
 </html>
