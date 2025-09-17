@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Rural School Attendance System - Login</title>
+
+  <link rel="stylesheet" href="/frontend/static/css/styles.css" />
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+
+     <!-- Right: card with title + form -->
+      <header class="login-header">
+        <h1 class="school-title">Rural School Attendance System</h1>
+        <p class="login-subtitle">Please sign in to continue</p>
+      </header>
+
+      <form id="loginForm" class="login-form" novalidate>
+        <div class="form-group">
+          <label for="rollno">Roll No:</label>
+          <input id="rollno" name="rollno" type="text" required autocomplete="username" class="form-control" />
+          <div id="rollno-error" class="error-message"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <div class="password-input-wrapper">
+            <input id="password" name="password" type="password" required autocomplete="current-password" class="form-control" />
+            <button type="button" id="passwordToggle" class="password-toggle" aria-label="Toggle password">👁️</button>
+          </div>
+          <div id="password-error" class="error-message"></div>
+        </div>
+
+        <fieldset class="form-group user-type-fieldset">
+          <legend>I am a</legend>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="userType" value="teacher" required> TEACHER</label>
+            <label class="radio-option"><input type="radio" name="userType" value="student" required> STUDENT</label>
+          </div>
+          <div id="userType-error" class="error-message"></div>
+        </fieldset>
+        <button id="loginBtn" type="submit" class="btn btn--primary">Log In</button>
+
+        <div class="form-links">
+          <a href="/frontend/static/templates/signup.html" id="sign-up" class="sign-up">Sign Up</a>
+          <a href="#" class="forgot-password-link">Forgot Password?</a>
+          <a href="#" class="help-link">Help</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/frontend/static/js/Login.js"></script>
+</body>
+</html>
