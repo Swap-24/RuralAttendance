@@ -59,37 +59,50 @@ def home():
 def signup():
     if request.method == "GET":
         return render_template("signup.html")
+
+    # POST request
+    data = request.form
+    name = data.get("name")
+    email = data.get("email")
+    roll_number = data.get("roll_number")
+    password = data.get("password")
+    confirm_password = data.get("confirm_password")
+    user_role = data.get("user_role")  # "student" or "admin"
+
+
+    # Hash password
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+    # Handle image
+    file = request.files.get("image")
+    if not file:
+        return "Image file is required.", 400
+
+    image = face_recognition.load_image_file(file)
+    encodings = face_recognition.face_encodings(image)
+
+    if not encodings:
+        return "No face detected in the image.", 400
+
+    encoding = encodings[0].tolist()
+
+    # Prepare user record
+    user = {
+        "name": name,
+        "email": email,
+        "roll_number": roll_number,
+        "password": hashed_password.decode('utf-8'),
+        "userRole": user_role,
+        "face_encoding": encoding,
+    }
+
+    # Insert into Supabase
+    response = supabase.table("users").insert(user).execute()
+
+    if response.data:
+        return redirect(url_for("home"))
     else:
-        data = request.form
-        username = data.get("username")
-        email = data.get("email")
-        password = data.get("password")
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-        userType = data.get("userType")
-        file = request.files.get("image")
-        if file:
-            image = face_recognition.load_image_file(file)
-            encodings = face_recognition.face_encodings(image)
-            if encodings:
-                encoding = encodings[0]
-                encoding_list = encoding.tolist()
-                user = {
-                    "username": username,
-                    "email": email,
-                    "password": hashed_password.decode('utf-8'),
-                    "userType": userType,
-                    "face_encoding": encoding_list
-                }
-                response = supabase.table("users").insert(user).execute()
-                if response.status_code == 201:
-                    return redirect(url_for("home"))
-                else:
-                    return "Error creating user.", 500
-            else:
-                return "No face detected in the image.", 400
-        else:
-            return "Image file is required.", 400
-        
+        return "Error creating user.", 500
 
         
 

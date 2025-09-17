@@ -5,7 +5,13 @@ flask-sqlalchemy
 psycopg2-binary
 python-dotenv
 bcrypt
+supabase
+os
+
 
 #AI
 numpy
 pandas
+face-recognition
+opencv-python
+cmake
