@@ -82,7 +82,7 @@ def signup():
         return jsonify({"field": "confirm_password", "message": "Passwords do not match."}), 400
 
     # Check if email already exists
-    existing_email = supabase.table("users").select("id").eq("email", email).execute()
+    existing_email = supabase.table("users").select("email").eq("email", email).execute()
     if existing_email.data:
         return jsonify({"field": "email", "message": "Email already exists."}), 400
 

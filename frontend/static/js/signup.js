@@ -74,11 +74,13 @@ fetch('/signup', {
 .then(response => response.json().then(data => ({ status: response.status, body: data })))
 .then(({ status, body }) => {
   if (status === 200 && body.field === "success") {
+    // Signup successful → redirect
     window.location.href = body.redirect;
   } else if (body.field && body.message) {
-    const errorField = document.getElementById(`${body.field}-error`);
-    if (errorField) {
-      errorField.textContent = body.message;
+    // Display the message in the correct error span
+    const errorSpan = document.getElementById(`${body.field}-error`);
+    if (errorSpan) {
+      errorSpan.textContent = body.message;
     }
   }
 })
