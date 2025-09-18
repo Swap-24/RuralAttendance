@@ -125,6 +125,10 @@ def signup():
         return jsonify({"field": "success", "redirect": url_for("/")}), 200
     else:
         return jsonify({"field": "submit", "message": "Error creating user."}), 500
+
+@app.route("/student_view")
+def student_view():
+    return render_template("student_view.html", name=session.get("name"), rollno=session.get("rollno"))
     
 
 if __name__ == "__main__":
