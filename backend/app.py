@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template, redirect, url_for, request
+from flask import Flask, jsonify, render_template, redirect, url_for, request , session
 from flask_cors import CORS
 
 import face_recognition
@@ -16,6 +16,7 @@ STATIC_DIR = os.path.join(BASE_DIR, "frontend", "static")
 
 app = Flask(__name__, template_folder=TEMPLATES_DIR, static_folder=STATIC_DIR)
 CORS(app)
+app.secret_key = "ABCD1234"
 
 load_dotenv()
 
@@ -26,29 +27,40 @@ SERVICE_ROLE_KEY = os.getenv("SERVICE_ROLE_KEY")
 supabase = create_client(DATABASE_URL, SERVICE_ROLE_KEY)
 
 
+from flask import jsonify, request, render_template
+
 @app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
         return render_template("login.html")
     else:
-        data = request.form
-        rollno = data.get("roll_number")
+        data = request.get_json()
+        rollno = data.get("rollno")
         password = data.get("password")
+        session["rollno"] = rollno
+
         response = supabase.table("users").select("*").eq("roll_number", rollno).execute()
-        if response.status_code == 200 and response.data:
-            user = response.data[0]
-            stored_hashed_password = user["password_hash"].encode('utf-8')
-            if bcrypt.checkpw(password.encode('utf-8'), stored_hashed_password):
-                if user["role"] == "student":
-                    return redirect(url_for("student_view", user_id=user["id"]))
-                elif user["role"] == "teacher":
-                    return redirect(url_for("teacher_view", user_id=user["id"]))
-                else:
-                    return "Invalid user type.", 400
-            else:
-                return "Incorrect password.", 401
+        
+
+        if not response.data:
+            return jsonify({"message": "User not found."}), 404
+
+        user = response.data[0]
+        session["name"] = user["name"]
+        stored_hashed_password = user["password_hash"].encode('utf-8')
+
+        if not bcrypt.checkpw(password.encode('utf-8'), stored_hashed_password):
+            return jsonify({"message": "Incorrect password."}), 401
+
+        if user["role"] == "student":
+            redirect(url_for("student_view"))
+            return jsonify({"message": "Login Successful!", "role": "student"}), 200
+
+        elif user["role"] == "teacher":
+            return jsonify({"message": "Login Successful!", "role": "teacher"}), 200
         else:
-            return "User not found.", 404
+            return jsonify({"message": "Invalid user type."}), 400
+
 
 
 @app.route("/signup", methods=["GET", "POST"])
@@ -60,6 +72,7 @@ def signup():
     name = data.get("name")
     email = data.get("email")
     roll_number = data.get("roll_number")
+    grade = data.get("grade")
     password = data.get("password")
     confirm_password = data.get("confirm_password")
     user_role = data.get("userType")
@@ -91,6 +104,7 @@ def signup():
         "password_hash": hashed_password,
         "role": user_role,
         "face_encoding": face_encoding_b64,  
+        "grade": grade
     }
 
     response = supabase.table("users").insert(user).execute()
@@ -99,6 +113,11 @@ def signup():
         return redirect(url_for("login"))
     else:
         return "Error creating user.", 500
+    
+@app.route("/student_view", methods=["GET"])
+def student_view():
+    name  = session.get("name")
+    return render_template("StudentView.html", name=name)
     
 
 if __name__ == "__main__":

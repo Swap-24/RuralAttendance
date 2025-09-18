@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Rural School Attendance System - Sign Up</title>
-  <link rel="stylesheet" href="/frontend/static/css/styles.css">
+  <link rel="stylesheet" href="{{url_for('static', filename = 'css/styles.css')}}">
 </head>
 <body>
   <div class="login-container">
@@ -32,6 +32,12 @@
     <div class="form-group">
         <label for="roll_number">Roll Number</label>
         <input type="text" id="roll_number" name="roll_number" required>
+    </div>
+
+    <!-- Grade -->
+    <div class="form-group">
+        <label for="grade">Grade</label>
+        <input type="number" id="grade" name="grade" min="1" max="12" required>
     </div>
 
     <!-- Password -->
@@ -66,9 +72,10 @@
         <button type="submit">Sign Up</button>
     </div>
 </form>
+
     </div>
   </div>
 
- <script src="/frontend/static/js/signup.js"></script>
+ <script src="{{url_for('static', filename = 'js/signup.js')}}"></script>
 </body>
 </html>

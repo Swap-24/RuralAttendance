@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const userType = document.querySelector('input[name="userType"]:checked');
     const imageInput = document.getElementById('image');
     const imageFile = imageInput.files[0];
+    const grade = document.getElementById('grade');
 
     // Clear previous errors
     document.getElementById('username-error').textContent = '';
@@ -68,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
     formData.append('password', password);
     formData.append('userType', userType.value);
     formData.append('image', imageFile);
+    formData.append('grade', grade);
 
     // Send POST request to /signup
     fetch('/signup', {
@@ -76,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .then(response => {
       if (response.ok) {
-        window.location.href = '/login'; // Change as needed
+        window.location.href = '/'; // Change as needed
       } else {
         return response.json().then(data => {
           // Show error message (you can customize this)
