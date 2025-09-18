@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Rural School Attendance System - Sign Up</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link rel="stylesheet" href="/frontend/static/css/styles.css">
 </head>
 <body>
   <div class="login-container">
@@ -14,7 +14,7 @@
         <p class="login-subtitle">Create your account</p>
       </header>
 
-      <form action="{{ url_for('signup') }}" method="POST" enctype="multipart/form-data">
+      <form action="" method="POST" enctype="multipart/form-data">
     
     <!-- Name -->
     <div class="form-group">
@@ -69,6 +69,6 @@
     </div>
   </div>
 
- <script src="{{ url_for('static', filename='js/signup.js') }}"></script>
+ <script src="/frontend/static/js/signup.js"></script>
 </body>
 </html>
