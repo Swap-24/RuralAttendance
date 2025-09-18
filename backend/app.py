@@ -77,25 +77,41 @@ def signup():
     confirm_password = data.get("confirm_password")
     user_role = data.get("user_role")
 
+    # Password check
     if password != confirm_password:
-        return "Passwords do not match.", 400
+        return jsonify({"field": "confirm_password", "message": "Passwords do not match."}), 400
 
-    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+    # Check if email already exists
+    existing_email = supabase.table("users").select("id").eq("email", email).execute()
+    if existing_email.data:
+        return jsonify({"field": "email", "message": "Email already exists."}), 400
 
+    # Check if roll number already exists
+    existing_roll = supabase.table("users").select("id").eq("roll_number", roll_number).execute()
+    if existing_roll.data:
+        return jsonify({"field": "roll_number", "message": "Roll number already exists."}), 400
+
+    # Required field checks
+    required_fields = {"name": name, "grade": grade, "user_role": user_role}
+    for field, value in required_fields.items():
+        if not value:
+            return jsonify({"field": field, "message": f"{field.replace('_',' ').title()} is required."}), 400
+
+    # Image handling
     file = request.files.get("image")
     if not file:
-        return "Image file is required.", 400
+        return jsonify({"field": "image", "message": "Profile image is required."}), 400
 
     image = face_recognition.load_image_file(file)
     encodings = face_recognition.face_encodings(image)
-
     if not encodings:
-        return "No face detected in the image.", 400
+        return jsonify({"field": "image", "message": "No face detected in the image."}), 400
 
     face_encoding = encodings[0]
-
     face_encoding_bytes = np.array(face_encoding, dtype=np.float64).tobytes()
     face_encoding_b64 = base64.b64encode(face_encoding_bytes).decode("utf-8")
+
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
     user = {
         "name": name,
@@ -103,21 +119,15 @@ def signup():
         "roll_number": roll_number,
         "password_hash": hashed_password,
         "role": user_role,
-        "face_encoding": face_encoding_b64,  
+        "face_encoding": face_encoding_b64,
         "grade": grade
     }
 
     response = supabase.table("users").insert(user).execute()
-
     if response.data:
-        return redirect(url_for("login"))
+        return jsonify({"field": "success", "redirect": url_for("login")}), 200
     else:
-        return "Error creating user.", 500
-    
-@app.route("/student_view", methods=["GET"])
-def student_view():
-    name  = session.get("name")
-    return render_template("StudentView.html", name=name)
+        return jsonify({"field": "submit", "message": "Error creating user."}), 500
     
 
 if __name__ == "__main__":

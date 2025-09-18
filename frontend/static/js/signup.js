@@ -67,21 +67,23 @@ document.addEventListener('DOMContentLoaded', function() {
     formData.append('image', imageFile);
 
     // Send POST request
-    fetch('/signup', {
-      method: 'POST',
-      body: formData
-    })
-    .then(response => {
-      if (response.redirected) {
-        window.location.href = response.url; // Redirect to login
-      } else {
-        return response.text().then(text => {
-          document.getElementById('name-error').textContent = text || 'Signup failed.';
-        });
-      }
-    })
-    .catch(() => {
-      document.getElementById('name-error').textContent = 'Network error. Please try again.';
-    });
+fetch('/signup', {
+  method: 'POST',
+  body: formData
+})
+.then(response => response.json().then(data => ({ status: response.status, body: data })))
+.then(({ status, body }) => {
+  if (status === 200 && body.field === "success") {
+    window.location.href = body.redirect;
+  } else if (body.field && body.message) {
+    const errorField = document.getElementById(`${body.field}-error`);
+    if (errorField) {
+      errorField.textContent = body.message;
+    }
+  }
+})
+.catch(() => {
+  console.error("Network error while signing up");
+});
   });
 });
