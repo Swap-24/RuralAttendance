@@ -27,21 +27,21 @@ supabase = create_client(DATABASE_URL, SERVICE_ROLE_KEY)
 
 
 @app.route("/", methods=["GET", "POST"])
-def home():
+def login():
     if request.method == "GET":
         return render_template("login.html")
     else:
         data = request.form
-        email = data.get("email")
+        rollno = data.get("roll_number")
         password = data.get("password")
-        response = supabase.table("users").select("*").eq("email", email).execute()
+        response = supabase.table("users").select("*").eq("roll_number", rollno).execute()
         if response.status_code == 200 and response.data:
             user = response.data[0]
-            stored_hashed_password = user["password"].encode('utf-8')
+            stored_hashed_password = user["password_hash"].encode('utf-8')
             if bcrypt.checkpw(password.encode('utf-8'), stored_hashed_password):
-                if user["userType"] == "student":
+                if user["role"] == "student":
                     return redirect(url_for("student_view", user_id=user["id"]))
-                elif user["userType"] == "teacher":
+                elif user["role"] == "teacher":
                     return redirect(url_for("teacher_view", user_id=user["id"]))
                 else:
                     return "Invalid user type.", 400
@@ -62,7 +62,7 @@ def signup():
     roll_number = data.get("roll_number")
     password = data.get("password")
     confirm_password = data.get("confirm_password")
-    user_role = data.get("user_role")
+    user_role = data.get("userType")
 
     if password != confirm_password:
         return "Passwords do not match.", 400
@@ -81,7 +81,6 @@ def signup():
 
     face_encoding = encodings[0]
 
-    # ✅ Convert to base64 string
     face_encoding_bytes = np.array(face_encoding, dtype=np.float64).tobytes()
     face_encoding_b64 = base64.b64encode(face_encoding_bytes).decode("utf-8")
 
@@ -91,15 +90,16 @@ def signup():
         "roll_number": roll_number,
         "password_hash": hashed_password,
         "role": user_role,
-        "face_encoding": face_encoding_b64,  # ✅ safe for Supabase
+        "face_encoding": face_encoding_b64,  
     }
 
     response = supabase.table("users").insert(user).execute()
 
     if response.data:
-        return redirect(url_for("home"))
+        return redirect(url_for("login"))
     else:
         return "Error creating user.", 500
+    
 
 if __name__ == "__main__":
     app.run(debug=True)

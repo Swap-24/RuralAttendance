@@ -2,8 +2,8 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('loginForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+   const rollNumber = document.getElementById("roll_number").value;
+   const password = document.getElementById("password").value;
     const userType = document.querySelector('input[name="userType"]:checked');
     const rememberMe = document.getElementById('rememberMe').checked;
 

@@ -54,18 +54,18 @@ if __name__ == "__main__":
         if not ret:
             break
 
-        # Resize frame for faster detection
+        
         small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
         rgb_small_frame = cv2.cvtColor(small_frame, cv2.COLOR_BGR2RGB)
 
-        # Detect faces + encodings
+        
         face_locations = face_recognition.face_locations(rgb_small_frame)
         face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
 
         for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
             name = "Unknown"
 
-            # Compare with DB encodings
+            
             matches = face_recognition.compare_faces(known_face_encodings, face_encoding, tolerance=0.6)
             face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
 
@@ -74,19 +74,19 @@ if __name__ == "__main__":
                 if matches[best_match_index]:
                     name = known_face_names[best_match_index]
 
-            # Scale back up for drawing
+            
             top *= 4
             right *= 4
             bottom *= 4
             left *= 4
 
-            # Draw rectangle
+            
             cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)
 
-            # Label background
+            
             cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 255, 0), cv2.FILLED)
 
-            # Write name
+            
             font = cv2.FONT_HERSHEY_DUPLEX
             cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
