@@ -40,7 +40,6 @@ def login():
         session["rollno"] = rollno
 
         response = supabase.table("users").select("*").eq("roll_number", rollno).execute()
-        
 
         if not response.data:
             return jsonify({"message": "User not found."}), 404
@@ -52,15 +51,13 @@ def login():
         if not bcrypt.checkpw(password.encode('utf-8'), stored_hashed_password):
             return jsonify({"message": "Incorrect password."}), 401
 
+        # Return JSON response with role, no redirect here
         if user["role"] == "student":
-            redirect(url_for("student_view"))
             return jsonify({"message": "Login Successful!", "role": "student"}), 200
-
         elif user["role"] == "teacher":
             return jsonify({"message": "Login Successful!", "role": "teacher"}), 200
         else:
             return jsonify({"message": "Invalid user type."}), 400
-
 
 
 @app.route("/signup", methods=["GET", "POST"])
