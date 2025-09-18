@@ -14,68 +14,76 @@
         <p class="login-subtitle">Create your account</p>
       </header>
 
-      <form action="" method="POST" enctype="multipart/form-data">
+      <form id="signupForm" action="" method="POST" enctype="multipart/form-data">
     
-    <!-- Name -->
-    <div class="form-group">
-        <label for="name">Full Name</label>
-        <input type="text" id="name" name="name" required>
-    </div>
+        <!-- Name -->
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" required>
+          <span class="error-message" id="name-error"></span>
+        </div>
 
-    <!-- Email -->
-    <div class="form-group">
-        <label for="email">Email Address</label>
-        <input type="email" id="email" name="email" required>
-    </div>
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required>
+          <span class="error-message" id="email-error"></span>
+        </div>
 
-    <!-- Roll Number -->
-    <div class="form-group">
-        <label for="roll_number">Roll Number</label>
-        <input type="text" id="roll_number" name="roll_number" required>
-    </div>
+        <!-- Roll Number -->
+        <div class="form-group">
+          <label for="roll_number">Roll Number</label>
+          <input type="text" id="roll_number" name="roll_number" required>
+          <span class="error-message" id="roll-error"></span>
+        </div>
 
-    <!-- Grade -->
-    <div class="form-group">
-        <label for="grade">Grade</label>
-        <input type="number" id="grade" name="grade" min="1" max="12" required>
-    </div>
+        <!-- Grade -->
+        <div class="form-group">
+          <label for="grade">Grade</label>
+          <input type="number" id="grade" name="grade" min="1" max="12" required>
+          <span class="error-message" id="grade-error"></span>
+        </div>
 
-    <!-- Password -->
-    <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required>
-    </div>
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required>
+          <span class="error-message" id="password-error"></span>
+        </div>
 
-    <!-- Confirm Password -->
-    <div class="form-group">
-        <label for="confirm_password">Confirm Password</label>
-        <input type="password" id="confirm_password" name="confirm_password" required>
-    </div>
+        <!-- Confirm Password -->
+        <div class="form-group">
+          <label for="confirm_password">Confirm Password</label>
+          <input type="password" id="confirm_password" name="confirm_password" required>
+          <span class="error-message" id="confirm-password-error"></span>
+        </div>
 
-    <!-- User Role (Radio buttons) -->
-    <div class="form-group">
-        <label>User Role</label><br>
-        <input type="radio" id="student" name="user_role" value="student" required>
-        <label for="student">Student</label><br>
-        <input type="radio" id="admin" name="user_role" value="admin" required>
-        <label for="admin">Admin</label>
-    </div>
+        <!-- User Role (Radio buttons) -->
+        <div class="form-group">
+          <label>User Role</label><br>
+          <input type="radio" id="student" name="user_role" value="student" required>
+          <label for="student">Student</label><br>
+          <input type="radio" id="admin" name="user_role" value="admin" required>
+          <label for="admin">Admin</label>
+          <span class="error-message" id="role-error"></span>
+        </div>
 
-    <!-- Image Upload -->
-    <div class="form-group">
-        <label for="image">Upload Profile Image</label>
-        <input type="file" id="image" name="image" accept="image/*">
-    </div>
+        <!-- Image Upload -->
+        <div class="form-group">
+          <label for="image">Upload Profile Image</label>
+          <input type="file" id="image" name="image" accept="image/*">
+          <span class="error-message" id="image-error"></span>
+        </div>
 
-    <!-- Submit -->
-    <div class="form-group">
-        <button type="submit">Sign Up</button>
-    </div>
-</form>
+        <!-- Submit -->
+        <div class="form-group">
+          <button type="submit">Sign Up</button>
+        </div>
+      </form>
 
     </div>
   </div>
 
- <script src="{{url_for('static', filename = 'js/signup.js')}}"></script>
+  <script src="{{url_for('static', filename = 'js/signup.js')}}"></script>
 </body>
 </html>

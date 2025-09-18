@@ -75,7 +75,7 @@ def signup():
     grade = data.get("grade")
     password = data.get("password")
     confirm_password = data.get("confirm_password")
-    user_role = data.get("userType")
+    user_role = data.get("user_role")
 
     if password != confirm_password:
         return "Passwords do not match.", 400

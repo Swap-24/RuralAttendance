@@ -4,8 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
    const rollno = document.getElementById("rollno").value;
    const password = document.getElementById("password").value;
-    const userType = document.querySelector('input[name="userType"]:checked');
-
+   const userType = document.querySelector('input[name="user_role"]:checked');
     // Clear previous errors
     document.getElementById('rollno-error').textContent = '';
     document.getElementById('password-error').textContent = '';
@@ -21,8 +20,8 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('password-error').textContent = 'Password is required.';
       hasError = true;
     }
-    if (!userType) {
-      document.getElementById('userType-error').textContent = 'Please select a user type.';
+    if (!user_role) {
+      document.getElementById('user_role-error').textContent = 'Please select a user type.';
       hasError = true;
     }
     if (hasError) return;
@@ -33,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
       body: JSON.stringify({
         rollno: rollno,
         password: password,
-        userType: userType ? userType.value : '',
+        user_role: user_role ? user_role.value : '',
       })
     })
     .then(response => {
