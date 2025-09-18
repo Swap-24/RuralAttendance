@@ -87,7 +87,7 @@ def signup():
         return jsonify({"field": "email", "message": "Email already exists."}), 400
 
     # Check if roll number already exists
-    existing_roll = supabase.table("users").select("id").eq("roll_number", roll_number).execute()
+    existing_roll = supabase.table("users").select("roll_number").eq("roll_number", roll_number).execute()
     if existing_roll.data:
         return jsonify({"field": "roll_number", "message": "Roll number already exists."}), 400
 
@@ -125,7 +125,7 @@ def signup():
 
     response = supabase.table("users").insert(user).execute()
     if response.data:
-        return jsonify({"field": "success", "redirect": url_for("login")}), 200
+        return jsonify({"field": "success", "redirect": url_for("/")}), 200
     else:
         return jsonify({"field": "submit", "message": "Error creating user."}), 500
     
