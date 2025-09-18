@@ -1,4 +1,18 @@
 document.addEventListener('DOMContentLoaded', function() {
+
+  function getErrorSpanId(field) {
+  const mapping = {
+    "roll_number": "roll-error",
+    "user_role": "role-error",
+    "confirm_password": "confirm-password-error",
+    "image": "image-error",
+    "name": "name-error",
+    "email": "email-error",
+    "grade": "grade-error",
+    "password": "password-error",
+  };
+  return mapping[field] || `${field}-error`;
+}
   // Password visibility toggles
   document.getElementById('passwordToggle').addEventListener('click', function() {
     const passwordInput = document.getElementById('password');
