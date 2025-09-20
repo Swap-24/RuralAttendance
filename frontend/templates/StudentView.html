@@ -17,7 +17,7 @@
                     </div>
                     <div class="school-info">
                         <h1 class="school-name">Rural School Attendance System</h1>
-                        <p class="welcome-message">Welcome back, <span id="studentName">{{name}}</span>!</p>
+                        <p class="welcome-message">Welcome back, <span id="studentName">{{ student.name }}</span>!</p>
                     </div>
                 </div>
                 <div class="header-right">
@@ -38,17 +38,19 @@
                                 <div class="photo-placeholder">👤</div>
                             </div>
                             <div class="student-details">
-                                <h2 class="student-name" id="studentNameDetail">{{name}}</h2>
+                                <h2 class="student-name" id="studentNameDetail">{{ student.name }}</h2>
                                 <div class="student-meta">
-                                    <span class="student-class" id="studentClass">10th Grade</span>
-                                    <span class="student-roll">Roll No: <span id="studentRoll">RS2024001</span></span>
+                                    <span class="student-class" id="studentClass">{{ student.grade }} Grade</span>
+                                    <span class="student-roll">Roll No: <span id="studentRoll">{{ student.rollno }}</span></span>
                                 </div>
                                 <div class="year-selector">
                                     <label for="academicYear" class="form-label">Academic Year:</label>
                                     <select id="academicYear" class="form-control">
-                                        <option value="2025-26" selected>2025-26</option>
-                                        <option value="2024-25">2024-25</option>
-                                        <option value="2023-24">2023-24</option>
+                                        {% for year in academic_years %}
+                                            <option value="{{ year }}" {% if year == current_year %}selected{% endif %}>
+                                                {{ year }}
+                                            </option>
+                                        {% endfor %}
                                     </select>
                                 </div>
                             </div>
@@ -65,7 +67,7 @@
                             <div class="summary-icon total-days">📅</div>
                             <div class="summary-content">
                                 <h3 class="summary-title">Total Days</h3>
-                                <p class="summary-value" id="totalDays">45</p>
+                                <p class="summary-value" id="totalDays">{{ attendance[current_year].total_days }}</p>
                             </div>
                         </div>
                     </div>
@@ -75,7 +77,7 @@
                             <div class="summary-icon present-days">✅</div>
                             <div class="summary-content">
                                 <h3 class="summary-title">Present</h3>
-                                <p class="summary-value present" id="presentDays">42</p>
+                                <p class="summary-value present" id="presentDays">{{ attendance[current_year].present }}</p>
                             </div>
                         </div>
                     </div>
@@ -85,7 +87,7 @@
                             <div class="summary-icon absent-days">❌</div>
                             <div class="summary-content">
                                 <h3 class="summary-title">Absent</h3>
-                                <p class="summary-value absent" id="absentDays">3</p>
+                                <p class="summary-value absent" id="absentDays">{{ attendance[current_year].absent }}</p>
                             </div>
                         </div>
                     </div>
@@ -95,10 +97,9 @@
                             <div class="summary-icon percentage">📊</div>
                             <div class="summary-content">
                                 <h3 class="summary-title">Attendance %</h3>
-                                <p class="summary-value" id="attendancePercentage">93.33%</p>
+                                <p class="summary-value" id="attendancePercentage">{{ attendance[current_year].percentage }}%</p>
                                 <div class="progress-bar">
-                                    <div class="progress-fill" id="progressFill" style="width: 93.33%"></div>
-                                </div>
+                                    <div class="progress-fill" id="progressFill"></div>
                             </div>
                         </div>
                     </div>
@@ -115,7 +116,7 @@
                                 <h3>Current Streak</h3>
                             </div>
                             <div class="performance-value">
-                                <span class="streak-number" id="currentStreak">15</span>
+                                <span class="streak-number" id="currentStreak">{{ performance.streak }}</span>
                                 <span class="streak-label">days</span>
                             </div>
                         </div>
@@ -128,7 +129,7 @@
                                 <h3>Points Earned</h3>
                             </div>
                             <div class="performance-value">
-                                <span class="points-number" id="pointsEarned">420</span>
+                                <span class="points-number" id="pointsEarned">{{ performance.points }}</span>
                                 <span class="points-label">points</span>
                             </div>
                         </div>
@@ -138,7 +139,9 @@
                         <div class="card__body">
                             <h3 class="achievements-title">Achievements</h3>
                             <div class="achievements-list" id="achievementsList">
-                                <!-- Achievements will be populated by JavaScript -->
+                                {% for achievement in achievements %}
+                                    <div class="achievement-item">🏆 {{ achievement }}</div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
@@ -165,7 +168,16 @@
                                     </tr>
                                 </thead>
                                 <tbody id="monthlyTableBody">
-                                    <!-- Table rows will be populated by JavaScript -->
+                                    {% for month in monthly_attendance %}
+                                    <tr>
+                                        <td>{{ month.name }}</td>
+                                        <td>{{ month.total_days }}</td>
+                                        <td>{{ month.present }}</td>
+                                        <td>{{ month.absent }}</td>
+                                        <td>{{ month.percentage }}%</td>
+                                        <td>{{ month.status }}</td>
+                                    </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
@@ -175,12 +187,20 @@
 
             <!-- Print Button -->
             <section class="actions-section">
-                <button class="btn btn--secondary print-btn" onclick="window.print()">
-                    📄 Print Report
-                </button>
-            </section>
-        </div>
-    </main>
-    <script src="../static/js/StudentView.js"></script>
+    <button class="btn btn--secondary print-btn" onclick="window.print()">
+        📄 Print Report
+    </button>
+</section>
+</div>
+</main>
+
+<script>
+  window.studentData = JSON.parse('{{ student|tojson|safe }}'); 
+  window.attendanceData = JSON.parse('{{ attendance|tojson|safe }}');
+  window.achievements = JSON.parse('{{ achievements|tojson|safe }}');
+  window.performanceData = JSON.parse('{{ performance|tojson|safe }}'); 
+  window.monthlyAttendance = JSON.parse('{{ monthly_attendance|tojson|safe }}');
+</script>
+<script src="../static/js/StudentView.js"></script>
 </body>
 </html>

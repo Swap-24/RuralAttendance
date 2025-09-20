@@ -27,8 +27,6 @@ SERVICE_ROLE_KEY = os.getenv("SERVICE_ROLE_KEY")
 supabase = create_client(DATABASE_URL, SERVICE_ROLE_KEY)
 
 
-from flask import jsonify, request, render_template
-
 @app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
@@ -45,11 +43,14 @@ def login():
             return jsonify({"message": "User not found."}), 404
 
         user = response.data[0]
-        session["name"] = user["name"]
+        print(user)
         stored_hashed_password = user["password_hash"].encode('utf-8')
 
         if not bcrypt.checkpw(password.encode('utf-8'), stored_hashed_password):
             return jsonify({"message": "Incorrect password."}), 401
+        session["name"] = user["name"]
+        session["grade"] = user["grade"]
+        session["rollno"] = user["roll_number"]
 
         # Return JSON response with role, no redirect here
         if user["role"] == "student":
@@ -126,10 +127,84 @@ def signup():
     else:
         return jsonify({"field": "submit", "message": "Error creating user."}), 500
 
+
 @app.route("/student_view")
 def student_view():
-    return render_template("student_view.html", name=session.get("name"), rollno=session.get("rollno"))
+    # ✅ Get logged-in student's roll number from session
+    rollno = session.get("rollno") 
     
+    # --- Fetch student info ---
+    student_resp = supabase.table("users").select("*").eq("roll_number", rollno).execute()
+    if not student_resp.data:
+        return "Student not found", 404
+    student = student_resp.data[0]  # dict with name, grade, rollno, etc.
+
+    # --- Fetch attendance records ---
+    attendance_resp = supabase.table("attendance").select("*").eq("roll_number", rollno).execute()
+    records = attendance_resp.data
+    print(records)
+
+    # --- Calculate totals ---
+    total_days = len(set([r["date"] for r in records]))
+    present_days = sum(1 for r in records if r["status"] in ["Present", "Excuse", "Late"])
+    absent_days = sum(1 for r in records if r["status"] == "Absent")
+    percentage = round((present_days / total_days) * 100, 2) if total_days > 0 else 0
+
+    # Wrap attendance in a dict keyed by year for JS
+    attendance = {
+        "2025-26": {
+            "total_days": total_days,
+            "present": present_days,
+            "absent": absent_days,
+            "percentage": percentage
+        }
+    }
+
+    # --- Example performance ---
+    performance = {
+        "streak": 10,   # placeholder
+        "points": 85    # placeholder
+    }
+
+    # --- Example achievements ---
+    achievements = ["Perfect Attendance - June", "7-Day Streak!"]
+
+    # --- Monthly breakdown ---
+    from collections import defaultdict
+    monthly = defaultdict(list)
+    for r in records:
+        month = r["date"][:7]  # YYYY-MM
+        monthly[month].append(r)
+    
+    monthly_attendance = []
+    for month, recs in monthly.items():
+        total = len(set([r["date"] for r in recs]))
+        present = sum(1 for r in recs if r["status"] in ["present", "excuse", "Late"])
+        absent = sum(1 for r in recs if r["status"] == "absent")
+        perc = round((present / total) * 100, 2) if total > 0 else 0
+        monthly_attendance.append({
+            "name": month,
+            "total_days": total,
+            "present": present,
+            "absent": absent,
+            "percentage": perc,
+            "status": "Excellent" if perc > 90 else "Good" if perc > 75 else "Needs Improvement"
+        })
+
+    academic_years = ["2024-25", "2025-26"]
+    current_year = "2025-26"
+    
+
+    return render_template(
+           "StudentView.html",
+    student=student,
+    attendance=attendance,  # ✅ single-year summary for template
+    performance=performance,
+    achievements=achievements,
+    monthly_attendance=monthly_attendance,
+    academic_years=academic_years,
+    current_year=current_year
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)

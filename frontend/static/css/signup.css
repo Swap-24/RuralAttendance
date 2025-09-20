@@ -1,0 +1,148 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #2f3136;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    color: #fff;
+    font-size: 16px;
+    background-image: url('../images/bg-img.jpeg'); 
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    backdrop-filter: blur(1px);
+}
+
+.login-container {
+    padding: 20px;
+    width: 100%;
+    max-width: 480px;
+    box-sizing: border-box;
+    
+}
+
+/* Login Card Styles */
+.login-card {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(10px); 
+    background: linear-gradient(180deg, rgb(11, 11, 42), rgb(34, 3, 69));
+    padding: 32px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    opacity: 0.80;
+}
+
+/* Header and Title Styles */
+.login-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.school-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 8px;
+}
+
+.login-subtitle {
+    font-size: 16px;
+    color: #b9bbbe;
+    margin: 0;
+}
+
+/* Form Group and Label Styles */
+.form-group {
+    margin-bottom: 16px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #b9bbbe;
+    font-size: 12px;
+}
+
+/* Input Field Styles */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    color: #2b2d31;
+    font-size: 16px;
+    box-sizing: border-box;
+    /* Add a smooth transition for the shadow effect */
+    transition: box-shadow 0.3s ease; 
+}
+
+/* Focus Effect for Input Fields */
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border: 1px solid #55aaff;
+    /* Add a soft glow effect on focus */
+    box-shadow: 0 0 10px rgba(122, 207, 238, 0.828);
+}
+
+/* Radio Button Styles */
+.form-group label[for="student"], .form-group label[for="admin"] {
+    display: inline;
+    margin-right: 20px;
+    text-transform: none;
+    font-weight: normal;
+    color: #dcddde;
+}
+
+input[type="radio"] {
+    margin-right: 8px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #5865f2;
+    border-radius: 50%;
+    position: relative;
+    top: 2px;
+    vertical-align: middle;
+}
+
+input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    background-color: #5865f2;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Submit Button Styles */
+button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #25a1b7;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #1e7d8d;
+}

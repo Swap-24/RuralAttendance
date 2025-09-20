@@ -1,78 +1,43 @@
-// Student Dashboard functionality
-document.addEventListener('DOMContentLoaded', function() {
-    // Student and attendance data
-    const studentData = {
-        "name": "Priya Sharma",
-        "rollNo": "RS2024001",
-        "class": "10th Grade",
-        "photo": "placeholder"
-    };
+document.addEventListener("DOMContentLoaded", function () {
+    // ✅ Get data directly from Flask (injected into template)
+    const studentData = window.studentData;
+    const attendanceData = window.attendanceData;
+    console.log(attendanceData);
+    const achievements = window.achievements; 
 
-    const attendanceData = {
-        "2025-26": {
-            "totalDays": 45,
-            "present": 42,
-            "absent": 3,
-            "percentage": 93.33,
-            "streak": 15,
-            "points": 420,
-            "monthlyData": [
-                {"month": "April", "totalDays": 22, "present": 21, "absent": 1, "percentage": 95.45},
-                {"month": "May", "totalDays": 23, "present": 21, "absent": 2, "percentage": 91.30}
-            ]
-        },
-        "2024-25": {
-            "totalDays": 200,
-            "present": 185,
-            "absent": 15,
-            "percentage": 92.50,
-            "streak": 28,
-            "points": 1850,
-            "monthlyData": [
-                {"month": "April", "totalDays": 20, "present": 19, "absent": 1, "percentage": 95.00},
-                {"month": "May", "totalDays": 22, "present": 20, "absent": 2, "percentage": 90.91},
-                {"month": "June", "totalDays": 18, "present": 17, "absent": 1, "percentage": 94.44},
-                {"month": "July", "totalDays": 23, "present": 22, "absent": 1, "percentage": 95.65},
-                {"month": "August", "totalDays": 21, "present": 19, "absent": 2, "percentage": 90.48},
-                {"month": "September", "totalDays": 22, "present": 21, "absent": 1, "percentage": 95.45},
-                {"month": "October", "totalDays": 23, "present": 22, "absent": 1, "percentage": 95.65},
-                {"month": "November", "totalDays": 20, "present": 18, "absent": 2, "percentage": 90.00},
-                {"month": "December", "totalDays": 15, "present": 14, "absent": 1, "percentage": 93.33},
-                {"month": "January", "totalDays": 21, "present": 19, "absent": 2, "percentage": 90.48},
-                {"month": "February", "totalDays": 19, "present": 18, "absent": 1, "percentage": 94.74},
-                {"month": "March", "totalDays": 16, "present": 15, "absent": 1, "percentage": 93.75}
-            ]
-        },
-        "2023-24": {
-            "totalDays": 195,
-            "present": 170,
-            "absent": 25,
-            "percentage": 87.18,
-            "streak": 12,
-            "points": 1700,
-            "monthlyData": [
-                {"month": "April", "totalDays": 18, "present": 16, "absent": 2, "percentage": 88.89},
-                {"month": "May", "totalDays": 20, "present": 17, "absent": 3, "percentage": 85.00},
-                {"month": "June", "totalDays": 19, "present": 16, "absent": 3, "percentage": 84.21},
-                {"month": "July", "totalDays": 22, "present": 19, "absent": 3, "percentage": 86.36},
-                {"month": "August", "totalDays": 20, "present": 17, "absent": 3, "percentage": 85.00},
-                {"month": "September", "totalDays": 21, "present": 18, "absent": 3, "percentage": 85.71},
-                {"month": "October", "totalDays": 22, "present": 20, "absent": 2, "percentage": 90.91},
-                {"month": "November", "totalDays": 19, "present": 16, "absent": 3, "percentage": 84.21},
-                {"month": "December", "totalDays": 14, "present": 12, "absent": 2, "percentage": 85.71},
-                {"month": "January", "totalDays": 20, "present": 17, "absent": 3, "percentage": 85.00},
-                {"month": "February", "totalDays": 18, "present": 16, "absent": 2, "percentage": 88.89},
-                {"month": "March", "totalDays": 15, "present": 13, "absent": 2, "percentage": 86.67}
-            ]
+    // ✅ Update Student Info (only if data exists)
+    if (studentData) {
+        document.getElementById("studentName").textContent = studentData.name;
+        document.getElementById("studentNameDetail").textContent = studentData.name;
+        document.getElementById("studentRoll").textContent = studentData.roll_number;
+        document.getElementById("studentClass").textContent = studentData.grade + " Grade";
+        if (studentData.photo) {
+            document.getElementById("studentPhoto").src = studentData.photo;
         }
-    };
+    }
 
-    const achievements = [
-        {"name": "Perfect Week", "description": "7 days perfect attendance", "icon": "⭐", "earned": true},
-        {"name": "Monthly Star", "description": "90%+ attendance in a month", "icon": "🌟", "earned": true},
-        {"name": "Streak Master", "description": "20+ days continuous attendance", "icon": "🔥", "earned": true},
-        {"name": "Year Champion", "description": "90%+ attendance for full year", "icon": "🏆", "earned": false}
-    ];
+    // ✅ Update Attendance Info
+    if (attendanceData) {
+        document.getElementById("totalDays").textContent = attendanceData.total_days;
+        document.getElementById("presentDays").textContent = attendanceData.present;
+        document.getElementById("absentDays").textContent = attendanceData.absent;
+        document.getElementById("attendancePercentage").textContent = attendanceData.percentage + "%";
+
+        // Progress bar
+        document.getElementById("progressFill").style.width = attendanceData.percentage + "%";
+    }
+
+    // ✅ Update Achievements
+    if (achievements && achievements.length > 0) {
+        const achievementsList = document.getElementById("achievementsList");
+        achievementsList.innerHTML = "";
+        achievements.forEach(item => {
+            const li = document.createElement("li");
+            li.textContent = item;
+            achievementsList.appendChild(li);
+        });
+    }
+
 
     // DOM elements
     const academicYearSelect = document.getElementById('academicYear');
@@ -91,99 +56,90 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Populate student basic information
     function populateStudentInfo() {
-        const studentNameElements = document.querySelectorAll('#studentName, #studentNameDetail');
-        const studentClassElement = document.getElementById('studentClass');
-        const studentRollElement = document.getElementById('studentRoll');
+       if (!studentData) return;
 
-        studentNameElements.forEach(element => {
-            if (element) element.textContent = studentData.name;
-        });
+    const studentNameElements = document.querySelectorAll('#studentName, #studentNameDetail');
+    studentNameElements.forEach(element => {
+        if (element) element.textContent = studentData.name;
+    });
 
-        if (studentClassElement) studentClassElement.textContent = studentData.class;
-        if (studentRollElement) studentRollElement.textContent = studentData.rollNo;
+    const studentClassElement = document.getElementById('studentClass');
+    const studentRollElement = document.getElementById('studentRoll');
+
+    if (studentClassElement) studentClassElement.textContent = studentData.grade + " Grade";
+    if (studentRollElement) studentRollElement.textContent = studentData.roll_number;
     }
 
     // Populate achievements section
     function populateAchievements() {
-        const achievementsList = document.getElementById('achievementsList');
-        if (!achievementsList) return;
+    const achievementsList = document.getElementById('achievementsList');
+    if (!achievementsList) return;
 
-        achievementsList.innerHTML = '';
+    achievementsList.innerHTML = '';
 
-        achievements.forEach(achievement => {
-            const achievementItem = document.createElement('div');
-            achievementItem.className = `achievement-item ${achievement.earned ? 'earned' : ''}`;
-            
-            achievementItem.innerHTML = `
-                <div class="achievement-icon">${achievement.icon}</div>
-                <div class="achievement-content">
-                    <h4>${achievement.name}</h4>
-                    <p>${achievement.description}</p>
-                </div>
-            `;
-            
-            achievementsList.appendChild(achievementItem);
-        });
-    }
+    achievements.forEach(achievement => {
+        const achievementItem = document.createElement('div');
+        achievementItem.className = 'achievement-item earned'; // mark all as earned for now
+
+        // Using a star icon for simplicity
+        achievementItem.innerHTML = `
+            <div class="achievement-icon">⭐</div>
+            <div class="achievement-content">
+                <h4>${achievement}</h4>
+            </div>
+        `;
+
+        achievementsList.appendChild(achievementItem);
+    });
+}
 
     // Update dashboard data based on selected year
     function updateDashboard(selectedYear) {
-        console.log('Updating dashboard for year:', selectedYear);
-        const yearData = attendanceData[selectedYear];
-        if (!yearData) {
-            console.error('No data found for year:', selectedYear);
-            return;
-        }
+       console.log('Updating dashboard for year:', selectedYear);
+    const yearData = attendanceData[selectedYear]; // ✅ this comes from Flask
+    if (!yearData) {
+        console.error('No data found for year:', selectedYear);
+        return;
+    }
 
-        // Update summary cards
-        updateSummaryCards(yearData);
-        
-        // Update performance indicators
-        updatePerformanceIndicators(yearData);
-        
-        // Update monthly table
-        updateMonthlyTable(yearData.monthlyData);
-        
-        console.log('Dashboard updated successfully');
+    updateSummaryCards(yearData);
+    updatePerformanceIndicators(window.performanceData);
+    updateMonthlyTable(window.monthlyAttendance);
     }
 
     // Update summary cards
     function updateSummaryCards(data) {
-        const totalDaysElement = document.getElementById('totalDays');
-        const presentDaysElement = document.getElementById('presentDays');
-        const absentDaysElement = document.getElementById('absentDays');
-        const attendancePercentageElement = document.getElementById('attendancePercentage');
-        const progressFillElement = document.getElementById('progressFill');
+    const totalDaysElement = document.getElementById('totalDays');
+    const presentDaysElement = document.getElementById('presentDays');
+    const absentDaysElement = document.getElementById('absentDays');
+    const attendancePercentageElement = document.getElementById('attendancePercentage');
+    const progressFillElement = document.getElementById('progressFill');
 
-        if (totalDaysElement) totalDaysElement.textContent = data.totalDays;
-        if (presentDaysElement) presentDaysElement.textContent = data.present;
-        if (absentDaysElement) absentDaysElement.textContent = data.absent;
-        if (attendancePercentageElement) attendancePercentageElement.textContent = data.percentage.toFixed(2) + '%';
+    if (totalDaysElement) totalDaysElement.textContent = data.total_days;
+    if (presentDaysElement) presentDaysElement.textContent = data.present;
+    if (absentDaysElement) absentDaysElement.textContent = data.absent;
+    if (attendancePercentageElement) attendancePercentageElement.textContent = data.percentage.toFixed(2) + '%';
 
-        // Update progress bar
-        if (progressFillElement) {
-            progressFillElement.style.width = data.percentage + '%';
-            
-            // Remove existing classes
-            progressFillElement.classList.remove('warning', 'error');
-            
-            // Add appropriate class based on percentage
-            if (data.percentage < 75) {
-                progressFillElement.classList.add('error');
-            } else if (data.percentage < 90) {
-                progressFillElement.classList.add('warning');
-            }
+    if (progressFillElement) {
+        progressFillElement.style.width = data.percentage + '%';
+
+        // optional: color classes based on percentage
+        progressFillElement.classList.remove('warning', 'error');
+        if (data.percentage < 75) {
+            progressFillElement.classList.add('error');
+        } else if (data.percentage < 90) {
+            progressFillElement.classList.add('warning');
         }
     }
-
+}
     // Update performance indicators
-    function updatePerformanceIndicators(data) {
-        const currentStreakElement = document.getElementById('currentStreak');
-        const pointsEarnedElement = document.getElementById('pointsEarned');
+    function updatePerformanceIndicators(performanceData) {
+    const currentStreakElement = document.getElementById('currentStreak');
+    const pointsEarnedElement = document.getElementById('pointsEarned');
 
-        if (currentStreakElement) currentStreakElement.textContent = data.streak;
-        if (pointsEarnedElement) pointsEarnedElement.textContent = data.points.toLocaleString();
-    }
+    if (currentStreakElement) currentStreakElement.textContent = performanceData.streak;
+    if (pointsEarnedElement) pointsEarnedElement.textContent = performanceData.points.toLocaleString();
+}
 
     // Update monthly table
     function updateMonthlyTable(monthlyData) {
@@ -211,13 +167,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             row.innerHTML = `
-                <td>${monthData.month}</td>
-                <td>${monthData.totalDays}</td>
-                <td class="present">${monthData.present}</td>
-                <td class="absent">${monthData.absent}</td>
-                <td class="attendance-percentage ${percentageClass}">${monthData.percentage.toFixed(2)}%</td>
-                <td><span class="status ${statusClass}">${statusText}</span></td>
-            `;
+    <td>${monthData.name}</td>
+    <td>${monthData.total_days}</td>
+    <td class="present">${monthData.present}</td>
+    <td class="absent">${monthData.absent}</td>
+    <td class="attendance-percentage ${percentageClass}">${monthData.percentage.toFixed(2)}%</td>
+    <td><span class="status ${statusClass}">${statusText}</span></td>
+`;
             
             tableBody.appendChild(row);
         });
