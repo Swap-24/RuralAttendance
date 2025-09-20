@@ -198,7 +198,7 @@ def student_view():
     return render_template(
            "StudentView.html",
     student=student,
-    attendance=attendance,  # ✅ single-year summary for template
+    attendance=attendance,  
     performance=performance,
     achievements=achievements,
     monthly_attendance=monthly_attendance,
